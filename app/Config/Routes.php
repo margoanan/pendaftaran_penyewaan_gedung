@@ -1,0 +1,89 @@
+<?php
+
+namespace Config;
+
+// Create a new instance of our RouteCollection class.
+$routes = Services::routes();
+
+// Load the system's routing file first, so that the app and ENVIRONMENT
+// can override as needed.
+if (file_exists(SYSTEMPATH . 'Config/Routes.php'))
+{
+	require SYSTEMPATH . 'Config/Routes.php';
+}
+
+/**
+ * --------------------------------------------------------------------
+ * Router Setup
+ * --------------------------------------------------------------------
+ */
+$routes->setDefaultNamespace('App\Controllers');
+$routes->setDefaultController('Dashboard');
+$routes->setDefaultMethod('index');
+$routes->setTranslateURIDashes(true);
+$routes->set404Override();
+$routes->setAutoRoute(true);
+$routes->get('/', 'Dashboard::index');
+$routes->get('dashboard', 'Dashboard::index');
+
+$routes->get('penyakit', 'Penyakit::index');
+$routes->get('penyakit/create', 'Penyakit::create');
+$routes->post('penyakit/store', 'Penyakit::store'); 
+$routes->get('penyakit/edit/(:num)', 'Penyakit::edit/$1'); 
+$routes->post('penyakit/update/(:num)', 'Penyakit::update/$1'); 
+$routes->get('penyakit/delete/(:num)', 'Penyakit::delete/$1');
+
+$routes->get('diagnosis', 'Diagnosis::index');
+$routes->get('diagnosis/create', 'Diagnosis::create');
+$routes->post('diagnosis/store', 'Diagnosis::store'); 
+$routes->get('diagnosis/edit/(:num)', 'Diagnosis::edit/$1'); 
+$routes->post('diagnosis/update/(:num)', 'Diagnosis::update/$1'); 
+$routes->get('diagnosis/delete/(:num)', 'Diagnosis::delete/$1');
+
+$routes->get('/konsultasi', 'Konsultasi::index');
+$routes->get('/konsultasi/hasil', 'Konsultasi::hasil');
+
+
+// $routes->get('gedung', 'Gedung::index');
+// $routes->get('gedung/create', 'Gedung::create');
+// $routes->post('gedung/store', 'Gedung::store');
+// $routes->get('gedung/edit/(:num)', 'Gedung::edit/$1');
+// $routes->post('gedung/update', 'Gedung::update');
+// $routes->get('gedung/delete/(:num)', 'Gedung::delete/$1');
+
+// $routes->get('auth/login', 'Auth::login');
+// $routes->post('auth/proses_login', 'Auth::proses_login');
+// $routes->get('auth/logout', 'Auth::logout');
+// $routes->get('auth/register', 'Auth::register');
+// $routes->post('auth/proses_register', 'Auth::proses_register');
+
+
+/*
+ * --------------------------------------------------------------------
+ * Route Definitions
+ * --------------------------------------------------------------------
+ */
+
+// We get a performance increase by specifying the default
+// route since we don't have to scan directories.
+$routes->get('/', 'Home::index');
+$routes->resource('pelangganapi');
+
+
+/*
+ * --------------------------------------------------------------------
+ * Additional Routing
+ * --------------------------------------------------------------------
+ *
+ * There will often be times that you need additional routing and you
+ * need it to be able to override any defaults in this file. Environment
+ * based routes is one such time. require() additional route files here
+ * to make that happen.
+ *
+ * You will have access to the $routes object within that file without
+ * needing to reload it.
+ */
+if (file_exists(APPPATH . 'Config/' . ENVIRONMENT . '/Routes.php'))
+{
+	require APPPATH . 'Config/' . ENVIRONMENT . '/Routes.php';
+}
